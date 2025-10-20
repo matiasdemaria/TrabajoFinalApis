@@ -1,6 +1,10 @@
-﻿namespace TrabajoFinalApis.Repository.Implementation
+﻿using Microsoft.EntityFrameworkCore;
+using TrabajoFinalApis.Entities;
+
+namespace TrabajoFinalApis.Repository.Implementation;
+
+
+public class UserRepository
 {
-    public class UserRepository
-    {
-    }
+    
 }

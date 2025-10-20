@@ -1,6 +1,5 @@
-﻿namespace TrabajoFinalApis.Repository.Interfaces
+﻿namespace TrabajoFinalApis.Repository.Interfaces;
+
+public interface IProductRepository
 {
-    public interface IProductRepository
-    {
-    }
 }
