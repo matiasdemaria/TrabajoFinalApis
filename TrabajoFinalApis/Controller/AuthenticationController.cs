@@ -19,36 +19,36 @@ public class AuthenticationController : ControllerBase
         _userService = userService;
     }
 
-    [HttpPost]
-    public IActionResult Authenticate([FromBody] CredentialDtoRequest credentials)
-    {
-        User? user = _userService.Authenticate(credentials.Email, credentials.Password);
+    //[HttpPost]
+    //public IActionResult Authenticate([FromBody] CredentialDtoRequest credentials)
+    //{
+    //    User? user = _userService.Authenticate(credentials.Email, credentials.Password);
 
-        if (user is not null)
-        {
-            var securityPassword = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_config["Authentication:SecretForKey"]));
+    //    if (user is not null)
+    //    {
+    //        var securityPassword = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_config["Authentication:SecretForKey"]));
 
-            var signature = new SigningCredentials(securityPassword, SecurityAlgorithms.HmacSha256);
+    //        var signature = new SigningCredentials(securityPassword, SecurityAlgorithms.HmacSha256);
 
-            var claimsForToken = new List<Claim>
-            {
-                new Claim("sub", user.Id.ToString()),
-                new Claim("role", user.Role)
-            };
+    //        var claimsForToken = new List<Claim>
+    //        {
+    //            new Claim("sub", user.Id.ToString()),
+    //            new Claim("role", user.Role)
+    //        };
 
-            var jwtSecurityToken = new JwtSecurityToken(
-                _config["Authentication:Issuer"],
-                _config["Authentication:Audience"],
-                claimsForToken,
-                DateTime.UtcNow,
-                DateTime.UtcNow.AddHours(1),
-                signature
-            );
+    //        var jwtSecurityToken = new JwtSecurityToken(
+    //            _config["Authentication:Issuer"],
+    //            _config["Authentication:Audience"],
+    //            claimsForToken,
+    //            DateTime.UtcNow,
+    //            DateTime.UtcNow.AddHours(1),
+    //            signature
+    //        );
 
-            var tokenToReturn = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
-            return Ok(tokenToReturn);
-        }
+    //        var tokenToReturn = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
+    //        return Ok(tokenToReturn);
+    //    }
 
-        return Unauthorized();
-    }
+    //    return Unauthorized();
+    //}
 }

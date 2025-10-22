@@ -1,6 +1,5 @@
-﻿namespace TrabajoFinalApis.Service.Implementation
+﻿namespace TrabajoFinalApis.Service.Implementation;
+
+public class ProductService
 {
-    public class ProductService
-    {
-    }
 }

@@ -4,6 +4,6 @@ namespace TrabajoFinalApis.Service.Interface;
 
 public interface IUserService
 {
-    User? Authenticate(string email, string password);
+    //User? Authenticate(string email, string password);
 
 }

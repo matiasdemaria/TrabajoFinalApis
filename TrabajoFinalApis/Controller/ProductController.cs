@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace TrabajoFinalApis.Controller
+namespace TrabajoFinalApis.Controllers
 {
     public class ProductController : Controller
     {
