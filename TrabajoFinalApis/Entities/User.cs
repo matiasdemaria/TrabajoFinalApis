@@ -21,7 +21,7 @@ public class User //Restaurantes
     public string Email { get; set; } = string.Empty;
     
     [MaxLength(25)]
-    public string RestaurantName { get; set; }
+    public string RestaurantName { get; set; }  = string.Empty;
 
     public bool IsActive { get; set; } = true;
 
