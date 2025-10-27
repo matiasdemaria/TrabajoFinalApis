@@ -13,8 +13,8 @@ public class User //Restaurantes
     [MaxLength(50)]
     public string Username { get; set; } = string.Empty;
 
-    [MaxLength(50)]
-    public string Password { get; set; } = string.Empty;
+    [Required]
+    public string PasswordHash { get; set; } = string.Empty;
 
     
     [EmailAddress]

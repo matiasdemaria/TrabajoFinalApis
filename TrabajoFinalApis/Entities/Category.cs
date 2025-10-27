@@ -15,7 +15,7 @@ public class Category
     [ForeignKey("UserId")]
     public User User { get; set; }
 
-    public ICollection<Product> products { get; set; } = new List<Product>();
+    public ICollection<Product> Products { get; set; } = new List<Product>();
 
 
 }

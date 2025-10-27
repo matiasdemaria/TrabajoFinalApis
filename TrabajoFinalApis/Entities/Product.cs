@@ -16,7 +16,7 @@ public class Product
 
     public decimal? DiscountPercentage { get; set; }
     public bool IsHappyHour { get; set; } = false;
-
+    public bool IsFavorite { get; set; } = false;
     public int UserId { get; set; }
 
     [ForeignKey("UserId")]
