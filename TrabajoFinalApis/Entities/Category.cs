@@ -7,14 +7,13 @@ public class Category
 {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public int id { get; set; }
+    public int Id { get; set; }
 
     public string Name { get; set; } = string.Empty;
     public string? Description { get; set; }
-
-    [ForeignKey("User")]
     public int UserId { get; set; }
-    public User user { get; set; }
+    [ForeignKey("UserId")]
+    public User User { get; set; }
 
     public ICollection<Product> products { get; set; } = new List<Product>();
 

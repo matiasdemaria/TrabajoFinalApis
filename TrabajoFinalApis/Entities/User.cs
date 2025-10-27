@@ -9,7 +9,7 @@ public class User //Restaurantes
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
-
+    
     [MaxLength(50)]
     public string Username { get; set; } = string.Empty;
 
@@ -25,7 +25,7 @@ public class User //Restaurantes
 
     public bool IsActive { get; set; } = true;
 
-    public string Adress { get; set; } = string.Empty;
+    public string Address { get; set; } = string.Empty;
     public string Phone { get; set; } = string.Empty;
     public ICollection<Product> Products { get; set; } = new List<Product>();
     public ICollection<Category> Categories { get; set; } = new List<Category>();

@@ -10,8 +10,8 @@ using TrabajoFinalApis.Data;
 namespace TrabajoFinalApis.Migrations
 {
     [DbContext(typeof(TrabajoFinalApisContext))]
-    [Migration("20251020152427_nuev")]
-    partial class nuev
+    [Migration("20251027123033_segunda")]
+    partial class segunda
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,7 +21,7 @@ namespace TrabajoFinalApis.Migrations
 
             modelBuilder.Entity("TrabajoFinalApis.Entities.Category", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
@@ -35,11 +35,20 @@ namespace TrabajoFinalApis.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("id");
+                    b.HasKey("Id");
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("categories");
+                    b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Description = "Todo tipo de pizzas",
+                            Name = "Pizzas",
+                            UserId = 1
+                        });
                 });
 
             modelBuilder.Entity("TrabajoFinalApis.Entities.Product", b =>
@@ -76,7 +85,20 @@ namespace TrabajoFinalApis.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("products");
+                    b.ToTable("Products");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CategoryId = 1,
+                            Description = "Pizza de mozzarela",
+                            DiscountPercentage = 0m,
+                            IsHappyHour = false,
+                            Name = "Pizza",
+                            Price = 12m,
+                            UserId = 1
+                        });
                 });
 
             modelBuilder.Entity("TrabajoFinalApis.Entities.User", b =>
@@ -85,7 +107,7 @@ namespace TrabajoFinalApis.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Adress")
+                    b.Property<string>("Address")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -117,36 +139,47 @@ namespace TrabajoFinalApis.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("users");
+                    b.ToTable("Users");
 
                     b.HasData(
                         new
                         {
                             Id = 1,
-                            Adress = "paraguay  1950",
-                            Email = "matiasdenamaria9@gmail.com",
+                            Address = "avenida 212",
+                            Email = "matiasdemaria9@gmail",
                             IsActive = true,
-                            Password = "Lol",
-                            Phone = "343232",
-                            RestaurantName = "WOWOWOW",
-                            Username = "OSTIA"
+                            Password = "lol",
+                            Phone = "3464552",
+                            RestaurantName = "PizzaLol",
+                            Username = "matiasldemaria"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Address = "",
+                            Email = "",
+                            IsActive = true,
+                            Password = "",
+                            Phone = "",
+                            RestaurantName = "",
+                            Username = ""
                         });
                 });
 
             modelBuilder.Entity("TrabajoFinalApis.Entities.Category", b =>
                 {
-                    b.HasOne("TrabajoFinalApis.Entities.User", "user")
+                    b.HasOne("TrabajoFinalApis.Entities.User", "User")
                         .WithMany("Categories")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("user");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("TrabajoFinalApis.Entities.Product", b =>
                 {
-                    b.HasOne("TrabajoFinalApis.Entities.Category", "category")
+                    b.HasOne("TrabajoFinalApis.Entities.Category", "Category")
                         .WithMany("products")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -158,9 +191,9 @@ namespace TrabajoFinalApis.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("User");
+                    b.Navigation("Category");
 
-                    b.Navigation("category");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("TrabajoFinalApis.Entities.Category", b =>

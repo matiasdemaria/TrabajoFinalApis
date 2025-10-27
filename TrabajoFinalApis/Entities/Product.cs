@@ -16,12 +16,14 @@ public class Product
 
     public decimal? DiscountPercentage { get; set; }
     public bool IsHappyHour { get; set; } = false;
-    
-    [ForeignKey("User")]
+
     public int UserId { get; set; }
+
+    [ForeignKey("UserId")]
     public User User { get; set;}
 
-    [ForeignKey("Category")]
     public int CategoryId { get; set; }
-    public Category category { get; set; }
+    
+    [ForeignKey("CategoryId")]
+    public Category Category { get; set; }
 }
