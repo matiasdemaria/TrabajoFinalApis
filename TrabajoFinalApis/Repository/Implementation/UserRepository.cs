@@ -28,7 +28,6 @@ public class UserRepository:IUserRepository
     public int Create(User newUser)
     {
         var usuarios = _context.Users;
-        newUser.Id = usuarios.Max(x => x.Id) + 1;
         usuarios.Add(newUser);
         return newUser.Id;
         
@@ -56,12 +55,26 @@ public class UserRepository:IUserRepository
     public void RemoveUser(int userId)
     {
         var usuario = _context.Users.FirstOrDefault(x => x.Id == userId);
-        _context.Users.Remove(usuario);       
+        _context.Users.Remove(usuario);
+        _context.SaveChanges();
         
     }
 
     public void Update(User updatedUser, int userId)
     {
-        throw new NotImplementedException();
+        var usuario = _context.Users.FirstOrDefault(x => x.Id == userId);
+        if(usuario != null)
+        {
+            usuario.Id = updatedUser.Id;
+            usuario.Address = updatedUser.Address;
+            usuario.Email = updatedUser.Email;
+            usuario.RestaurantName = updatedUser.RestaurantName;
+            usuario.Username = updatedUser.Username;
+            usuario.IsActive = updatedUser.IsActive;
+            usuario.PasswordHash = updatedUser.PasswordHash;
+            usuario.Phone = updatedUser.Phone;
+        }
+        _context.SaveChanges();
+
     }
 }
