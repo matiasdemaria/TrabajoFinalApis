@@ -66,18 +66,31 @@ public class UserService : IUserService
         }
     }
 
-    public int RegisterUser(UserCreateDto UserRegister)
-    {
+    public int RegisterUser(UserCreateDto UserRegister) //Hay que realizar una autenthicacion con JWT
+    {   
         throw new NotImplementedException();
     }
 
     public void Update(int id, UserUpdateDto UserUpdate)
     {
-        throw new NotImplementedException();
+        var usuario = userRepository.GetById(id);
+        if(usuario != null)
+        {
+            usuario.RestaurantName = UserUpdate.RestaurantName;
+            usuario.Email = UserUpdate.Email;
+            usuario.Address = UserUpdate.Adress;
+            usuario.Phone = UserUpdate.Phone;
+
+        }
+        else
+        {
+            throw new Exception("El usuario que desea actualizar no existe");
+        }
     }
 
     public User? ValidateUser(UserLoginDto loginDto)
     {
+
         throw new NotImplementedException();
-    }
+    }//Tambien hay que realiizar algo con JWT
 }
