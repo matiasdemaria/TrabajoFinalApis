@@ -10,10 +10,8 @@ public class Product
     public int Id { get; set; }
     public string Name { get; set; } = string.Empty;
     public string? Description { get; set; }
-    
     [Required]
     public decimal Price { get; set; }
-
     public decimal? DiscountPercentage { get; set; }
     public bool IsHappyHour { get; set; } = false;
     public bool IsFavorite { get; set; } = false;

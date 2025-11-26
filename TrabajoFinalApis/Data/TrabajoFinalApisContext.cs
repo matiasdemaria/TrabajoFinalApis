@@ -25,7 +25,7 @@ public class TrabajoFinalApisContext : DbContext
             PasswordHash = "lol",
             Phone = "3464552",
             RestaurantName = "PizzaLol",
-            Username = "matiasldemaria"
+            Username = "matiasldemaria" 
         },
         new User
         {

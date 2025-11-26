@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using TrabajoFinalApis.Data;
+using TrabajoFinalApis.Repository.Implementation; 
+using TrabajoFinalApis.Repository.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +12,10 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<TrabajoFinalApisContext>(dbContextOptions => dbContextOptions.UseSqlite(builder.Configuration["ConnectionStrings:TrabajoFinalApisDBConnectionString"]));
+
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
 
 var app = builder.Build();
 

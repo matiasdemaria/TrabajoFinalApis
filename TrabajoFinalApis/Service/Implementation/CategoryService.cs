@@ -1,6 +1,7 @@
-﻿namespace TrabajoFinalApis.Service.Implementation
+﻿namespace TrabajoFinalApis.Service.Implementation;
+using TrabajoFinalApis.Repository.Implementation;
+public class CategoryService
 {
-    public class CategoryService
-    {
-    }
+    
+
 }

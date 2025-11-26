@@ -24,6 +24,10 @@
 
   <ItemGroup>
     <Folder Include="Migrations\" />
+    <Folder Include="Model\Dto\Category\Response\" />
+    <Folder Include="Model\Dto\Category\Request\" />
+    <Folder Include="Model\Dto\Product\Request\" />
+    <Folder Include="Model\Dto\Product\Response\" />
   </ItemGroup>
 
 </Project>

@@ -12,6 +12,11 @@ public class UserRepository:IUserRepository
     {
         _context = context;
     }
+
+    public UserRepository()
+    {
+    }
+
     public bool CheckIfUserExists(int userId)
     {
         var usuario = _context.Users;
@@ -76,5 +81,10 @@ public class UserRepository:IUserRepository
         }
         _context.SaveChanges();
 
+    }
+    public User? GetByEmail(string Email)
+    {
+        var usuario = _context.Users.FirstOrDefault(x => x.Email.ToLower() == Email.ToLower());
+        return usuario;
     }
 }

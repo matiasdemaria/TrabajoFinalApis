@@ -36,24 +36,31 @@ public class ProductRepository:IProductRepository
         return happyHour;
     }
 
-    public Product GetProductById(int productId, int userId)
+    public Product? GetProductById(int productId, int userId)
     {
-        var producto = _context.Products.Where(x => x.UserId == userId).Where(x => x.Id == productId).ToList();
+        var producto = _context.Products.FirstOrDefault(p => p.Id == productId && p.UserId == userId);
         return producto;
     }
 
     public List<Product> GetProductsByCategory(int categoryId, int userId)
     {
-        throw new NotImplementedException();
+        var productos = _context.Products.Where(x => x.UserId == userId && x.CategoryId == categoryId).ToList();
+        return productos;
     }
 
     public void Remove(int productId, int userId)
     {
-        throw new NotImplementedException();
+        var producto = _context.Products.FirstOrDefault(x => x.UserId == userId && x.Id == productId);
+        _context.Products.Remove(producto);
+        _context.SaveChanges();
     }
 
     public void Update(Product product)
     {
-        throw new NotImplementedException();
+        //Segun chat, EF detecta directamente el user id 
+        _context.Products.Update(product);
+        _context.SaveChanges();
+
+
     }
 }
