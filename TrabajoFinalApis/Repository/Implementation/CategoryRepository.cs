@@ -4,7 +4,7 @@ using TrabajoFinalApis.Repository.Interfaces;
 
 namespace TrabajoFinalApis.Repository.Implementation;
 
-public class CategoryRepository : ICategoryRepository
+public class CategoryRepository:ICategoryRepository
 {
     private readonly TrabajoFinalApisContext _context; //llamado a la base de datos
     public CategoryRepository(TrabajoFinalApisContext context)
@@ -12,35 +12,47 @@ public class CategoryRepository : ICategoryRepository
         _context = context;
     }
 
-    public void Create(Category newCategory)
+    public void Add(Category category)
     {
-        _context.Categories.Add(newCategory);
-        _context.SaveChanges();
+        _context.Categories.Add(category);
     }
 
-    public void Delete(int userId, int idCategory)
+    public bool BelongsToRestaurant(int categoryId, int restaurantId)
     {
-        var categoria = _context.Categories.FirstOrDefault(x => x.Id == idCategory && x.UserId == userId);
-        _context.Remove(categoria);
-        _context.SaveChanges();
+        return _context.Categories.Any(x => x.Id == categoryId && x.RestaurantId == restaurantId);
     }
-    public void Update(Category UpdateCategory)
+
+    public bool Exists(int id)
     {
-        _context.Categories.Update(UpdateCategory);
-        _context.SaveChanges();
+        return _context.Categories.Any(X => X.Id == id);
     }
-    public IEnumerable<Category> GetAllCategories(int userId)
+
+    public Category? GetById(int id)
     {
-        var categorias = _context.Categories.Where(x => x.UserId == userId).ToList();
+        var categoria = _context.Categories.FirstOrDefault(x => x.Id == id);
+        return categoria;
+    }
+
+    public IEnumerable<Category> GetByRestaurantId(int restaurantId)
+    {
+        var categorias = _context.Categories.Where(x => x.RestaurantId == restaurantId).ToList();
         return categorias;
     }
 
-    public Category? GetOneByUser(int userId, int categoryId)
+    public void Remove(Category category)
     {
-        var category = _context.Categories.FirstOrDefault(x => x.Id == categoryId && x.UserId == userId);
-        return category;
+        _context.Remove(category);
     }
-    
+
+    public int SaveChanges()
+    {
+        return _context.SaveChanges();
+    }
+
+    public void Update(Category category)
+    {
+        _context.Update(category);
+    }
 }
 
 

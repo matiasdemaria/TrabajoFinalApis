@@ -25,8 +25,8 @@ public class Product
     public TimeSpan? HappyHourEnd { get; set; }
 
     public bool IsFavorite { get; set; } = false;
-    
+
+    public int CategoryId { get; set; }
     [ForeignKey("CategoryId")]
-    public int CategoryId { get; set;}
     public Category Category { get; set; }
 }

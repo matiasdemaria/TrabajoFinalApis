@@ -14,9 +14,10 @@ public class Category
 
     public bool IsActive { get; set; }
 
+    public int RestaurantId { get; set; }
+    
     [ForeignKey("RestaurantId")]
     public Restaurant Restaurant { get; set; }
-    public int RestaurantId { get; set; }
   
     public ICollection<Product> Products { get; set; } = new List<Product>();
 }

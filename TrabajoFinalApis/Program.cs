@@ -13,9 +13,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<TrabajoFinalApisContext>(dbContextOptions => dbContextOptions.UseSqlite(builder.Configuration["ConnectionStrings:TrabajoFinalApisDBConnectionString"]));
 
-builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
-builder.Services.AddScoped<IProductRepository, ProductRepository>();
+
 
 var app = builder.Build();
 

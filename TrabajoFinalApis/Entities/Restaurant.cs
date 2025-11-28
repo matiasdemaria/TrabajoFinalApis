@@ -20,9 +20,10 @@ public class Restaurant
     public string Phone { get; set; } = string.Empty;
   
     public bool IsActive { get; set; }
-    [ForeignKey("UserId")]
-    public int UserId { get; set;}
 
+    public int UserId { get; set; }
+
+    [ForeignKey("UserId")]
     public User User { get; set; } = null!; //No puede haber un restaurante sin usuario.
 
     public ICollection<Category> Categories { get; set; } = new List<Category>();

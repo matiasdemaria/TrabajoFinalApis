@@ -1,66 +1,98 @@
-﻿using TrabajoFinalApis.Data;
+﻿using System.Collections.Generic;
+using System.Linq;
+using TrabajoFinalApis.Data;
 using TrabajoFinalApis.Entities;
 using TrabajoFinalApis.Repository.Interfaces;
 
-namespace TrabajoFinalApis.Repository.Implementation;
-
-public class ProductRepository:IProductRepository
+namespace TrabajoFinalApis.Repository.Implementation
 {
-    private readonly TrabajoFinalApisContext _context; //llamado a la base de datos
-    public ProductRepository(TrabajoFinalApisContext context)
+    public class ProductRepository : IProductRepository
     {
-        _context = context;
-    }
-    public int Create(Product product)
-    {
-        _context.Products.Add(product);
-        _context.SaveChanges();
-        return product.Id;
-    }
+        private readonly TrabajoFinalApisContext _context;
 
-    public List<Product> GetAllProductsByUser(int userId)
-    {
-        var productos = _context.Products.Where(x => x.UserId == userId).ToList();
-        return productos;
-    }
+        public ProductRepository(TrabajoFinalApisContext context)
+        {
+            _context = context;
+        }
+        public Product? GetById(int id)
+        {
+            return _context.Products
+                .FirstOrDefault(p => p.Id == id);
+        }
 
-    public List<Product> GetFavorites(int userId)
-    {
-        var favoritos = _context.Products.Where(x => x.UserId == userId).Where(x => x.IsFavorite == true).ToList();
-        return favoritos;
-    }
+        public IEnumerable<Product> GetByRestaurantId(int restaurantId)
+        {
+            return _context.Products
+                .Where(p => p.Category.RestaurantId == restaurantId)
+                .ToList();
+        }
+        public IEnumerable<Product> GetByCategory(int restaurantId, int categoryId)
+        {
+            return _context.Products
+                .Where(p => p.CategoryId == categoryId &&
+                            p.Category.RestaurantId == restaurantId)
+                .ToList();
+        }
 
-    public List<Product> GetHappyHourProducts(int userId)
-    {
-        var happyHour = _context.Products.Where(x => x.UserId == userId).Where(x => x.IsHappyHour == true).ToList();
-        return happyHour;
-    }
+        public IEnumerable<Product> GetFavorites(int restaurantId)
+        {
+            return _context.Products
+                .Where(p => p.IsFavorite &&
+                            p.Category.RestaurantId == restaurantId)
+                .ToList();
+        }
 
-    public Product? GetProductById(int productId, int userId)
-    {
-        var producto = _context.Products.FirstOrDefault(p => p.Id == productId && p.UserId == userId);
-        return producto;
-    }
+        public IEnumerable<Product> GetDiscounted(int restaurantId)
+        {
+            return _context.Products
+                .Where(p => p.Category.RestaurantId == restaurantId &&
+                            p.DiscountPercentage != null)
+                .ToList();
+        }
 
-    public List<Product> GetProductsByCategory(int categoryId, int userId)
-    {
-        var productos = _context.Products.Where(x => x.UserId == userId && x.CategoryId == categoryId).ToList();
-        return productos;
-    }
-
-    public void Remove(int productId, int userId)
-    {
-        var producto = _context.Products.FirstOrDefault(x => x.UserId == userId && x.Id == productId);
-        _context.Products.Remove(producto);
-        _context.SaveChanges();
-    }
-
-    public void Update(Product product)
-    {
-        //Segun chat, EF detecta directamente el user id 
-        _context.Products.Update(product);
-        _context.SaveChanges();
+        public IEnumerable<Product> GetHappyHour(int restaurantId)
+        {
+            return _context.Products
+                .Where(p => p.Category.RestaurantId == restaurantId &&
+                            p.IsHappyHour)
+                .ToList();
+        }
 
 
+        // ----- Validaciones -----
+
+        public bool Exists(int id)
+        {
+            return _context.Products.Any(p => p.Id == id);
+        }
+
+        public bool BelongsToRestaurant(int productId, int restaurantId)
+        {
+            return _context.Products.Any(p =>
+                p.Id == productId &&
+                p.Category.RestaurantId == restaurantId);
+        }
+
+        // ----- CRUD -----
+
+        public void Add(Product product)
+        {
+            _context.Products.Add(product);
+        }
+
+        public void Update(Product product)
+        {
+            _context.Products.Update(product);
+        }
+
+        public void Remove(Product product)
+        {
+            _context.Products.Remove(product);
+        }
+
+        public int SaveChanges()
+        {
+            return _context.SaveChanges();
+        }
     }
 }

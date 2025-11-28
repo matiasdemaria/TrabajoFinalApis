@@ -5,7 +5,7 @@ using TrabajoFinalApis.Repository.Interfaces;
 
 namespace TrabajoFinalApis.Repository.Implementation;
 
-public class UserRepository:IUserRepository
+public class UserRepository : IUserRepository
 {
     private readonly TrabajoFinalApisContext _context; //llamado a la base de datos
     public UserRepository(TrabajoFinalApisContext context)
@@ -13,36 +13,25 @@ public class UserRepository:IUserRepository
         _context = context;
     }
 
-    public UserRepository()
+    public void Add(User newUser)
     {
+        _context.Add(newUser);
     }
 
-    public bool CheckIfUserExists(int userId)
+    public void Remove(User user)
     {
-        var usuario = _context.Users;
-        if(usuario.Any(x => x.Id == userId))
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        _context.Remove(user);
     }
 
-    public int Create(User newUser)
+    public bool ExistsById(int userId)
     {
-        var usuarios = _context.Users;
-        usuarios.Add(newUser);
-        return newUser.Id;
-        
+        return _context.Users.Any(x => x.Id == userId);
     }
 
-    public List<User> GetAll()
+    public User? GetByEmail(string email)
     {
-        var usuarios = _context.Users.ToList();
-        return usuarios;
-        
+        var usuario = _context.Users.FirstOrDefault(x => x.Email== email);
+        return usuario;
     }
 
     public User? GetById(int userId)
@@ -51,40 +40,22 @@ public class UserRepository:IUserRepository
         return usuario;
     }
 
-    public User? GetUserByUsername(string username)
+    public User? GetByUsername(string username)
     {
-        var usuario = _context.Users.FirstOrDefault(x => x.Username.ToLower() == username.ToLower());
+        var usuario = _context.Users.FirstOrDefault(x => x.Username == username);
         return usuario;
     }
 
-    public void RemoveUser(int userId)
+    public int SaveChanges()
     {
-        var usuario = _context.Users.FirstOrDefault(x => x.Id == userId);
-        _context.Users.Remove(usuario);
-        _context.SaveChanges();
-        
+        // Devuelve true si se afectó al menos 1 fila
+        return _context.SaveChanges();
     }
 
-    public void Update(User updatedUser, int userId)
+    public void Update(User user)
     {
-        var usuario = _context.Users.FirstOrDefault(x => x.Id == userId);
-        if(usuario != null)
-        {
-            usuario.Id = updatedUser.Id;
-            usuario.Address = updatedUser.Address;
-            usuario.Email = updatedUser.Email;
-            usuario.RestaurantName = updatedUser.RestaurantName;
-            usuario.Username = updatedUser.Username;
-            usuario.IsActive = updatedUser.IsActive;
-            usuario.PasswordHash = updatedUser.PasswordHash;
-            usuario.Phone = updatedUser.Phone;
-        }
-        _context.SaveChanges();
-
-    }
-    public User? GetByEmail(string Email)
-    {
-        var usuario = _context.Users.FirstOrDefault(x => x.Email.ToLower() == Email.ToLower());
-        return usuario;
+        _context.Users.Update(user);
     }
 }
+
+

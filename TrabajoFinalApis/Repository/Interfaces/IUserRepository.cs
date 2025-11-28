@@ -4,12 +4,22 @@ namespace TrabajoFinalApis.Repository.Interfaces;
 
 public interface IUserRepository
 {
-    bool CheckIfUserExists(int userId);
-    User? GetUserByUsername(string username);
-    int Create(User newUser);
-    List<User> GetAll();
+    // Lecturas
+    bool ExistsById(int userId);
+
     User? GetById(int userId);
+
     User? GetByEmail(string email);
-    void RemoveUser(int userId);
-    void Update(User updatedUser, int userId);
+    
+    User? GetByUsername(string username);
+
+    // Altas, bajas, modificaciones
+    void Add(User newUser);
+
+    void Update(User user);
+
+    void Remove(User user);
+
+    // Confirmar cambios en DB (EF)
+    int SaveChanges();
 }
