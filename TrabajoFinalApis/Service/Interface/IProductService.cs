@@ -1,6 +1,4 @@
-﻿namespace TrabajoFinalApis.Service.Interface
+﻿namespace TrabajoFinalApis.Service.Interface;
+public interface IProductService
 {
-    public interface IProductService
-    {
-    }
 }

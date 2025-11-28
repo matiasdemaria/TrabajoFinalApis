@@ -1,16 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
-namespace TrabajoFinalApis.Entities;
+namespace TrabajoFinalApis.Model.Dto.Product.Response;
 
-public class Product
+public class ProductResponseDto
 {
-    [Key]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public int Id {get;set;}
+    public int Id { get; set; }
 
     [Required]
-    public string Name { get; set; } = string.Empty;
+    public string Name { get; set; }
 
     public string? Description { get; set; }
 
@@ -25,8 +22,4 @@ public class Product
     public TimeSpan? HappyHourEnd { get; set; }
 
     public bool IsFavorite { get; set; } = false;
-
-    public int CategoryId { get; set; }
-    [ForeignKey("CategoryId")]
-    public Category Category { get; set; }
 }

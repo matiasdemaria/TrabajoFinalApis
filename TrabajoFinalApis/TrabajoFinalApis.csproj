@@ -8,6 +8,33 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Model\Dto\Category\Request\CategoryUpdateDto.cs" />
+    <Compile Remove="Model\Dto\Product\ProductDiscountDtocs.cs" />
+    <Compile Remove="Model\Dto\Product\Request\ProductCreateDto.cs" />
+    <Compile Remove="Model\Dto\Product\Request\ProductDiscountDtocs.cs" />
+    <Compile Remove="Model\Dto\Product\Request\ProductDiscountRequestDtocs.cs" />
+    <Compile Remove="Model\Dto\Product\Request\ProductHappyHourDto.cs" />
+    <Compile Remove="Model\Dto\Product\Request\ProductUpdateDto.cs" />
+    <Compile Remove="Model\Dto\User\Request\UserChangePasswordDto.cs" />
+    <Compile Remove="Model\Dto\User\Request\UserCreateDto.cs" />
+    <Compile Remove="Model\Dto\User\Request\UserLoginDto.cs" />
+    <Compile Remove="Model\Dto\User\Request\UserUpdateDto.cs" />
+    <Compile Remove="Model\Dto\User\Response\OutResponseDto.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Model\Dto\Category\Request\NewFile.txt" />
+    <None Remove="Model\Dto\Category\Response\NewFile.txt" />
+    <None Remove="Model\Dto\Product\NewFile.txt" />
+    <None Remove="Model\Dto\Product\Request\NewFile.txt" />
+    <None Remove="Model\Dto\Product\Request\Product" />
+    <None Remove="Model\Dto\Product\Request\ProductDiscountRequestDto" />
+    <None Remove="Model\Dto\Restaurant\NewFile.txt" />
+    <None Remove="Model\Dto\User\Request\NewFile.txt" />
+    <None Remove="Model\Dto\User\Request\User" />
+  </ItemGroup>
+
+  <ItemGroup>
 	    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.21" />
 	    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.7" />
 	    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
@@ -24,10 +51,6 @@
 
   <ItemGroup>
     <Folder Include="Migrations\" />
-    <Folder Include="Model\Dto\Category\Response\" />
-    <Folder Include="Model\Dto\Category\Request\" />
-    <Folder Include="Model\Dto\Product\Request\" />
-    <Folder Include="Model\Dto\Product\Response\" />
   </ItemGroup>
 
 </Project>
