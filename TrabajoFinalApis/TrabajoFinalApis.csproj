@@ -9,20 +9,26 @@
 
   <ItemGroup>
     <Compile Remove="Model\Dto\Category\Request\CategoryUpdateDto.cs" />
+    <Compile Remove="Model\Dto\Category\Response\CategoryWithProductsDto.cs" />
     <Compile Remove="Model\Dto\Product\ProductDiscountDtocs.cs" />
     <Compile Remove="Model\Dto\Product\Request\ProductCreateDto.cs" />
     <Compile Remove="Model\Dto\Product\Request\ProductDiscountDtocs.cs" />
+    <Compile Remove="Model\Dto\Product\Request\ProductDiscountRequestDto.cs" />
     <Compile Remove="Model\Dto\Product\Request\ProductDiscountRequestDtocs.cs" />
     <Compile Remove="Model\Dto\Product\Request\ProductHappyHourDto.cs" />
+    <Compile Remove="Model\Dto\Product\Request\ProductHappyHourRequestDto.cs" />
     <Compile Remove="Model\Dto\Product\Request\ProductUpdateDto.cs" />
+    <Compile Remove="Model\Dto\Product\Request\ProductUpdateRequestDtocs.cs" />
     <Compile Remove="Model\Dto\User\Request\UserChangePasswordDto.cs" />
     <Compile Remove="Model\Dto\User\Request\UserCreateDto.cs" />
     <Compile Remove="Model\Dto\User\Request\UserLoginDto.cs" />
     <Compile Remove="Model\Dto\User\Request\UserUpdateDto.cs" />
     <Compile Remove="Model\Dto\User\Response\OutResponseDto.cs" />
+    <Compile Remove="Service\Interface\ICategoryServicecs.cs" />
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Controller\NewFile.txt" />
     <None Remove="Model\Dto\Category\Request\NewFile.txt" />
     <None Remove="Model\Dto\Category\Response\NewFile.txt" />
     <None Remove="Model\Dto\Product\NewFile.txt" />
@@ -32,9 +38,13 @@
     <None Remove="Model\Dto\Restaurant\NewFile.txt" />
     <None Remove="Model\Dto\User\Request\NewFile.txt" />
     <None Remove="Model\Dto\User\Request\User" />
+    <None Remove="Service\Implementation\NewFile.txt" />
+    <None Remove="Service\Interface\IJWT" />
+    <None Remove="Service\Interface\NewFile.txt" />
   </ItemGroup>
 
   <ItemGroup>
+	    <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
 	    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.21" />
 	    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.7" />
 	    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />

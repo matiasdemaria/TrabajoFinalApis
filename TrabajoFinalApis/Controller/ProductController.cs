@@ -1,83 +1,131 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using TrabajoFinalApis.Entities;
+using TrabajoFinalApis.Model.Dto.Product.Request;
+using TrabajoFinalApis.Model.Dto.Product.Response;
+using TrabajoFinalApis.Service.Interface;
 
-namespace TrabajoFinalApis.Controllers
+namespace TrabajoFinalApis.Controller
 {
-    public class ProductController : Controller
+    [ApiController]
+    [Route("api/[controller]")]
+    public class ProductController : ControllerBase
     {
-        // GET: ProductController
-        public ActionResult Index()
+        private readonly IProductService _productService;
+
+        public ProductController(IProductService productService)
         {
-            return View();
+            _productService = productService;
         }
 
-        // GET: ProductController/Details/5
-        public ActionResult Details(int id)
+        // -------- INVITADO --------
+
+        [HttpGet("{id:int}")]
+        [AllowAnonymous]
+        public ActionResult<ProductResponseDto> GetById(int id)
         {
-            return View();
+            var product = _productService.GetById(id);
+            return product == null ? NotFound() : Ok(product);
         }
 
-        // GET: ProductController/Create
-        public ActionResult Create()
+        [HttpGet("restaurant/{restaurantId:int}")]
+        [AllowAnonymous]
+        public ActionResult<ICollection<ProductResponseDto>> GetByRestaurant(int restaurantId)
         {
-            return View();
+            return Ok(_productService.GetByRestaurant(restaurantId));
         }
 
-        // POST: ProductController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        [HttpGet("restaurant/{restaurantId:int}/category/{categoryId:int}")]
+        [AllowAnonymous]
+        public ActionResult<ICollection<ProductResponseDto>> GetByCategory(int restaurantId, int categoryId)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            return Ok(_productService.GetByCategory(restaurantId, categoryId));
         }
 
-        // GET: ProductController/Edit/5
-        public ActionResult Edit(int id)
+        [HttpGet("restaurant/{restaurantId:int}/favorites")]
+        [AllowAnonymous]
+        public ActionResult<ICollection<ProductResponseDto>> GetFavorites(int restaurantId)
         {
-            return View();
+            return Ok(_productService.GetFavorites(restaurantId));
         }
 
-        // POST: ProductController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        [HttpGet("restaurant/{restaurantId:int}/discounted")]
+        [AllowAnonymous]
+        public ActionResult<ICollection<ProductResponseDto>> GetDiscounted(int restaurantId)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            return Ok(_productService.GetDiscounted(restaurantId));
         }
 
-        // GET: ProductController/Delete/5
-        public ActionResult Delete(int id)
+        [HttpGet("restaurant/{restaurantId:int}/happyhour")]
+        [AllowAnonymous]
+        public ActionResult<ICollection<ProductResponseDto>> GetHappyHour(int restaurantId)
         {
-            return View();
+            return Ok(_productService.GetHappyHour(restaurantId));
         }
 
-        // POST: ProductController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        // -------- DUEÑO --------
+        [HttpPost("categories/{categoryId:int}")]
+        [Authorize]
+        public IActionResult Create(int categoryId, [FromBody] ProductCreateRequestDto dto)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+
+            var created = _productService.Create(categoryId, userId, dto);
+            return Ok(created);
+        }
+
+        [HttpPut("{id:int}")]
+        [Authorize]
+        public ActionResult<ProductResponseDto> Update(int id, [FromBody] ProductUpdateRequestDto dto)
+        {
+            var userId = GetUserIdFromToken();
+            return Ok(_productService.Update(userId, id, dto));
+        }
+
+        [HttpDelete("{id:int}")]
+        [Authorize]
+        public IActionResult Remove(int id)
+        {
+            var userId = GetUserIdFromToken();
+            _productService.Remove(userId, id);
+            return NoContent();
+        }
+
+        [HttpPut("{id:int}/discount")]
+        [Authorize]
+        public ActionResult<ProductResponseDto> UpdateDiscount(int id, [FromBody] ProductDiscountUpdateRequestDto dto)
+        {
+            var userId = GetUserIdFromToken();
+            return Ok(_productService.UpdateDiscount(userId, id, dto));
+        }
+
+        [HttpPut("{id:int}/favorite")]
+        [Authorize]
+        public ActionResult<ProductResponseDto> UpdateFavorite(int id, [FromBody] ProductFavoriteUpdateRequestDto dto)
+        {
+            var userId = GetUserIdFromToken();
+            return Ok(_productService.UpdateFavorite(userId, id, dto));
+        }
+
+        [HttpPut("{id:int}/happyhour")]
+        [Authorize]
+        public ActionResult<ProductResponseDto> UpdateHappyHour(int id, [FromBody] ProductHappyHourUpdateRequestDto dto)
+        {
+            var userId = GetUserIdFromToken();
+            return Ok(_productService.UpdateHappyHour(userId, id, dto));
+        }
+
+        private int GetUserIdFromToken()
+        {
+            var sub = User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value
+                      ?? User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            return int.Parse(sub);
         }
     }
 }

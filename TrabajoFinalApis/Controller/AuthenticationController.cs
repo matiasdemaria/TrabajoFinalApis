@@ -1,54 +1,35 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
-using TrabajoFinalApis.Entities;
+using TrabajoFinalApis.Model.Dto.User.Request;
+using TrabajoFinalApis.Model.Dto.User.Response;
 using TrabajoFinalApis.Service.Interface;
 
-[Route("api/[controller]")]
-[ApiController]
-public class AuthenticationController : ControllerBase
+namespace TrabajoFinalApis.Controller
 {
-    private readonly IConfiguration _config;
-    private readonly IUserService _userService;
-
-    public AuthenticationController(IConfiguration config, IUserService userService)
+    [ApiController]
+    [Route("api/[controller]")]
+    public class AuthenticationController : ControllerBase
     {
-        _config = config;
-        _userService = userService;
+        private readonly IUserService _userService;
+
+        public AuthenticationController(IUserService userService)
+        {
+            _userService = userService;
+        }
+
+        // POST: api/authentication/register
+        [HttpPost("register")]
+        public ActionResult<UserResponseDto> Register([FromBody] UserCreateRequestDto dto)
+        {
+            var user = _userService.Register(dto);
+            return Ok(user);
+        }
+
+        // POST: api/authentication/login
+        [HttpPost("login")]
+        public ActionResult<AuthResponseDto> Login([FromBody] UserLoginRequestDto dto)
+        {
+            var auth = _userService.Login(dto);
+            return Ok(auth);
+        }
     }
-
-    //[HttpPost]
-    //public IActionResult Authenticate([FromBody] CredentialDtoRequest credentials)
-    //{
-    //    User? user = _userService.Authenticate(credentials.Email, credentials.Password);
-
-    //    if (user is not null)
-    //    {
-    //        var securityPassword = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_config["Authentication:SecretForKey"]));
-
-    //        var signature = new SigningCredentials(securityPassword, SecurityAlgorithms.HmacSha256);
-
-    //        var claimsForToken = new List<Claim>
-    //        {
-    //            new Claim("sub", user.Id.ToString()),
-    //            new Claim("role", user.Role)
-    //        };
-
-    //        var jwtSecurityToken = new JwtSecurityToken(
-    //            _config["Authentication:Issuer"],
-    //            _config["Authentication:Audience"],
-    //            claimsForToken,
-    //            DateTime.UtcNow,
-    //            DateTime.UtcNow.AddHours(1),
-    //            signature
-    //        );
-
-    //        var tokenToReturn = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
-    //        return Ok(tokenToReturn);
-    //    }
-
-    //    return Unauthorized();
-    //}
 }

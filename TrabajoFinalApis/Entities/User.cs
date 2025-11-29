@@ -22,7 +22,8 @@ public class User
     public string LastName { get; set; }
     
     [Required]
-    public string PasswordHash { get; set; }
+    public string PasswordHash { get; set; } = null!;
+
 
     [EmailAddress]
     [Required]

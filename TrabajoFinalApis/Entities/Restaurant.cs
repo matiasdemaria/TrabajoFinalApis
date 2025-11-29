@@ -11,7 +11,7 @@ public class Restaurant
 
     [MaxLength(25)]
     [Required]
-    public string RestaurantName { get; set; } = string.Empty;
+    public string  RestaurantName { get; set; } = string.Empty;
     
     public string? Description { get; set; } = string.Empty;
 

@@ -1,6 +1,8 @@
-﻿namespace TrabajoFinalApis.Model.Dto.Category
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace TrabajoFinalApis.Model.Dto.Category
 {
-    public class CategoryUpdateDto
+    public class CategoryUpdateRequestDto
     {
         [Required]
         [MaxLength(20)]

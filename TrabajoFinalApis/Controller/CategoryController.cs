@@ -1,83 +1,71 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using TrabajoFinalApis.Entities;
+using TrabajoFinalApis.Model.Dto.Category;
+using TrabajoFinalApis.Model.Dto.Category.Request;
+using TrabajoFinalApis.Model.Dto.Category.Response;
+using TrabajoFinalApis.Model.Dto.Product.Request;
+using TrabajoFinalApis.Service.Interface;
 
-namespace TrabajoFinalApis.Controllers
+namespace TrabajoFinalApis.Controller
 {
-    public class CategoryController : Controller
+    [ApiController]
+    [Route("api/[controller]")]
+    public class CategoryController : ControllerBase
     {
-        // GET: CategoryController
-        public ActionResult Index()
+        private readonly ICategoryService _categoryService;
+        private readonly IProductService _productService;
+
+        public CategoryController(ICategoryService categoryService,IProductService productService)
         {
-            return View();
+            _categoryService = categoryService;
+            _productService = productService;
         }
 
-        // GET: CategoryController/Details/5
-        public ActionResult Details(int id)
+        // INVITADO
+        [HttpGet("restaurant/{restaurantId:int}")]
+        [AllowAnonymous]
+        public ActionResult<ICollection<CategoryResponseDto>> GetByRestaurant(int restaurantId)
         {
-            return View();
+            return Ok(_categoryService.GetByRestaurant(restaurantId));
         }
 
-        // GET: CategoryController/Create
-        public ActionResult Create()
+        // DUEÑO
+        [HttpPost("categories/{categoryId:int}")]
+        [Authorize]
+        public IActionResult Create(int categoryId, [FromBody] ProductCreateRequestDto dto)
         {
-            return View();
+            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+            var created = _productService.Create(categoryId, userId, dto);
+            return Ok(created);
         }
 
-        // POST: CategoryController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+
+        [HttpPut("{id:int}")]
+        [Authorize]
+        public ActionResult<CategoryResponseDto> Update(int id, [FromBody] CategoryUpdateRequestDto dto)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            var userId = GetUserIdFromToken();
+            return Ok(_categoryService.Update(userId, id, dto));
         }
 
-        // GET: CategoryController/Edit/5
-        public ActionResult Edit(int id)
+        [HttpDelete("{id:int}")]
+        [Authorize]
+        public IActionResult Remove(int id)
         {
-            return View();
+            var userId = GetUserIdFromToken();
+            _categoryService.Remove(userId, id);
+            return NoContent();
         }
 
-        // POST: CategoryController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        private int GetUserIdFromToken()
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+            var sub = User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value
+                      ?? User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-        // GET: CategoryController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: CategoryController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            return int.Parse(sub);
         }
     }
 }

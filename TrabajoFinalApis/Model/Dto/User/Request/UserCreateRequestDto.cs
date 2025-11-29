@@ -2,7 +2,7 @@
 
 namespace TrabajoFinalApis.Model.Dto.User.Request
 {
-    public class UserCreatRequestDto
+    public class UserCreateRequestDto
     {
         [Required]
         [MaxLength(25)]

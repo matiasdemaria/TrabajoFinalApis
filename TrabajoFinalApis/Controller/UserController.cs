@@ -1,83 +1,70 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using TrabajoFinalApis.Model.Dto.User.Request;
+using TrabajoFinalApis.Model.Dto.User.Response;
+using TrabajoFinalApis.Service.Interface;
 
 namespace TrabajoFinalApis.Controllers
 {
-    public class UserController : Controller
+    [ApiController]
+    [Route("api/[controller]")]
+    [Authorize] // todos los endpoints de este controller requieren JWT
+    public class UserController : ControllerBase
     {
-        // GET: UserController
-        public ActionResult Index()
+        private readonly IUserService _userService;
+
+        public UserController(IUserService userService)
         {
-            return View();
+            _userService = userService;
         }
 
-        // GET: UserController/Details/5
-        public ActionResult Details(int id)
+        // GET: api/user/me
+        [HttpGet("me")]
+        public ActionResult<UserResponseDto> GetMyProfile()
         {
-            return View();
+            var userId = GetUserIdFromToken();
+            var user = _userService.GetById(userId);
+            return Ok(user);
         }
 
-        // GET: UserController/Create
-        public ActionResult Create()
+        // PUT: api/user/me
+        [HttpPut("me")]
+        public ActionResult<UserResponseDto> UpdateMyProfile([FromBody] UserUpdateRequestDto dto)
         {
-            return View();
+            var userId = GetUserIdFromToken();
+            var updated = _userService.Update(userId, dto);
+            return Ok(updated);
         }
 
-        // POST: UserController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        // PUT: api/user/me/password
+        [HttpPut("me/password")]
+        public IActionResult ChangePassword([FromBody] UserChangePasswordRequestDto dto)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            var userId = GetUserIdFromToken();
+            _userService.ChangePassword(userId, dto);
+            return NoContent();
         }
 
-        // GET: UserController/Edit/5
-        public ActionResult Edit(int id)
+        // DELETE: api/user/me
+        [HttpDelete("me")]
+        public IActionResult RemoveMyAccount()
         {
-            return View();
+            var userId = GetUserIdFromToken();
+            _userService.Remove(userId);
+            return NoContent();
         }
 
-        // POST: UserController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+        // ================== HELPER PARA SACAR EL userId DEL TOKEN ==================
 
-        // GET: UserController/Delete/5
-        public ActionResult Delete(int id)
+        private int GetUserIdFromToken()
         {
-            return View();
-        }
+            // Primero intentamos con el 'sub' del JWT, si no, con NameIdentifier
+            var sub = User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value
+                      ?? User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-        // POST: UserController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            return int.Parse(sub!);
         }
     }
 }

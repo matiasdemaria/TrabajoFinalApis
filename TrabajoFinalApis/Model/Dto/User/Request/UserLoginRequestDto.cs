@@ -9,5 +9,4 @@ namespace TrabajoFinalApis.Model.Dto.User.Request;
 
         [Required]
         public string Password { get; set; } = string.Empty;
-    }
-}
+    };

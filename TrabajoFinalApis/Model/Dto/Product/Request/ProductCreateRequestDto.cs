@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
 namespace TrabajoFinalApis.Model.Dto.Product.Request;
-public class ProductCreateDto
+public class ProductCreateRequestDto
 {
     [Required]
     public string Name { get; set; } = string.Empty;
@@ -9,4 +9,5 @@ public class ProductCreateDto
     [Required]
     public decimal Price { get; set; }
     public bool IsAvailable { get; set; } = true;
+
 }
