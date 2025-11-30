@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TrabajoFinalApis.Data;
 
@@ -10,9 +11,11 @@ using TrabajoFinalApis.Data;
 namespace TrabajoFinalApis.Migrations
 {
     [DbContext(typeof(TrabajoFinalApisContext))]
-    partial class TrabajoFinalApisContextModelSnapshot : ModelSnapshot
+    [Migration("20251130233331_Reseteo")]
+    partial class Reseteo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.9");

@@ -4,8 +4,10 @@ using TrabajoFinalApis.Model.Dto.Product.Request;
 using TrabajoFinalApis.Model.Dto.Product.Response;
 using TrabajoFinalApis.Repository.Interfaces;
 using TrabajoFinalApis.Service.Interface;
-using System.Globalization;
 using System.IO;
+using System.Linq;
+using System.Collections.Generic;
+
 
 
 namespace TrabajoFinalApis.Service.Implementation
@@ -181,8 +183,6 @@ namespace TrabajoFinalApis.Service.Implementation
 
             return MapToProductResponseDto(product);
         }
-
-
         public ProductResponseDto UpdateFavorite(int userId, int productId, ProductFavoriteUpdateRequestDto dto)
         {
             if (dto == null)
@@ -206,11 +206,6 @@ namespace TrabajoFinalApis.Service.Implementation
 
             return MapToProductResponseDto(product);
         }
-
-
-
-
-
         public ProductResponseDto UpdateHappyHour(int userId, int productId, ProductHappyHourUpdateRequestDto dto)
         {
             if (dto == null)
@@ -306,10 +301,6 @@ namespace TrabajoFinalApis.Service.Implementation
             _productRepository.SaveChanges();
         }
 
-        // =========================================================
-        // EXTRA: IMPORTACIÓN CSV (GOOGLE SHEETS)
-        // =========================================================
-
         public ProductImportResultDto ImportFromCsv(int userId, int restaurantId, Stream csvStream)
         {
             if (csvStream == null)
@@ -327,10 +318,11 @@ namespace TrabajoFinalApis.Service.Implementation
 
             using var reader = new StreamReader(csvStream);
 
-            // 2) Leer encabezado
+            // 2) Leer encabezado (y descartarlo)
             var headerLine = reader.ReadLine();
+            // Podrías validar acá si querés que tenga exactamente CategoryName,...
 
-            // 3) Categorías ya existentes para este restaurante
+            // 3) Traer categorías existentes
             var categories = _categoryRepository.GetByRestaurantId(restaurantId).ToList();
 
             string? line;
@@ -368,19 +360,16 @@ namespace TrabajoFinalApis.Service.Implementation
                     continue;
                 }
 
-                // Intentar parsear el precio
-                if (!decimal.TryParse(priceString, NumberStyles.Number, CultureInfo.InvariantCulture, out var price))
+                // ✅ Parseo simple del precio
+                if (!decimal.TryParse(priceString, out var price))
                 {
-                    if (!decimal.TryParse(priceString, NumberStyles.Number, CultureInfo.CurrentCulture, out price))
-                    {
-                        result.Errors.Add($"Fila {result.TotalRows}: precio inválido '{priceString}'.");
-                        continue;
-                    }
+                    result.Errors.Add($"Fila {result.TotalRows}: precio inválido '{priceString}'.");
+                    continue;
                 }
 
                 // 4) Buscar o crear categoría
-                var category = categories.FirstOrDefault(c =>
-                    c.Name.ToLower() == categoryName.ToLower());
+                var category = categories
+                    .FirstOrDefault(c => c.Name.ToLower() == categoryName.ToLower());
 
                 if (category == null)
                 {
@@ -420,7 +409,8 @@ namespace TrabajoFinalApis.Service.Implementation
 
             return result;
         }
-   
+
+
     }
 
 }
