@@ -24,10 +24,9 @@ public class User
     [Required]
     public string PasswordHash { get; set; } = null!;
 
-
-    [EmailAddress]
     [Required]
-    public string Email { get; set; } = string.Empty;
+    [EmailAddress]
+    public string Email { get; set; }
 
     [Required]
     public bool IsActive { get; set; } = true;

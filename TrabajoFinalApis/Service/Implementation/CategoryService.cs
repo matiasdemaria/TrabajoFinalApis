@@ -4,7 +4,7 @@ using System.Linq;
 using TrabajoFinalApis.Entities;
 using TrabajoFinalApis.Model.Dto.Category.Request;
 using TrabajoFinalApis.Model.Dto.Category.Response;
-using TrabajoFinalApis.Model.Dto.Category; // CategoryUpdateRequestDto
+using TrabajoFinalApis.Model.Dto.Category;
 using TrabajoFinalApis.Repository.Interfaces;
 using TrabajoFinalApis.Service.Interface;
 
@@ -43,8 +43,7 @@ public class CategoryService : ICategoryService
     {
         // Validar que el restaurante existe y pertenece al usuario logueado
         if (!_restaurantRepository.BelongsToUser(restaurantId, UserId))
-            throw new UnauthorizedAccessException(
-                "No podés crear categorías para un restaurante que no es tuyo.");
+            throw new UnauthorizedAccessException("No podés crear categorías para un restaurante que no es tuyo.");
 
         var category = new Category
         {

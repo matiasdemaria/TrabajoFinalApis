@@ -33,12 +33,12 @@ namespace TrabajoFinalApis.Controller
         }
 
         // DUEÑO
-        [HttpPost("categories/{categoryId:int}")]
+        [HttpPost("categories/{restaurantId:int}")]
         [Authorize]
-        public IActionResult Create(int categoryId, [FromBody] ProductCreateRequestDto dto)
+        public IActionResult Create(int restaurantId, CategoryCreateRequestDto dto)
         {
-            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
-            var created = _productService.Create(categoryId, userId, dto);
+            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!); //Obtiene el id del usuario desde el token
+            var created = _categoryService.Create(restaurantId,userId,dto);
             return Ok(created);
         }
 

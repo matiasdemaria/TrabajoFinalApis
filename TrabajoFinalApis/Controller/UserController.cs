@@ -30,7 +30,7 @@ namespace TrabajoFinalApis.Controllers
         }
 
         // PUT: api/user/me
-        [HttpPut("me")]
+        [HttpPatch("me")]
         public ActionResult<UserResponseDto> UpdateMyProfile([FromBody] UserUpdateRequestDto dto)
         {
             var userId = GetUserIdFromToken();
@@ -39,7 +39,7 @@ namespace TrabajoFinalApis.Controllers
         }
 
         // PUT: api/user/me/password
-        [HttpPut("me/password")]
+        [HttpPatch("me/password")]
         public IActionResult ChangePassword([FromBody] UserChangePasswordRequestDto dto)
         {
             var userId = GetUserIdFromToken();
@@ -55,8 +55,6 @@ namespace TrabajoFinalApis.Controllers
             _userService.Remove(userId);
             return NoContent();
         }
-
-        // ================== HELPER PARA SACAR EL userId DEL TOKEN ==================
 
         private int GetUserIdFromToken()
         {

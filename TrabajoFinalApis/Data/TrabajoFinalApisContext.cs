@@ -45,6 +45,7 @@ public class TrabajoFinalApisContext : DbContext
             new Restaurant
             {
                 Id = 1,
+                Description = "lol",
                 RestaurantName = "PizzaLol",
                 Address = "avenida 212",
                 Phone = "3464552",
@@ -54,6 +55,7 @@ public class TrabajoFinalApisContext : DbContext
             new Restaurant
             {
                 Id = 2,
+                Description = "lol",
                 RestaurantName = "TacoBell",
                 Address = "Paraguay 1950",
                 Phone = "34652255",

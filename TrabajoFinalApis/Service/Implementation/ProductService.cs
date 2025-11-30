@@ -86,8 +86,8 @@ namespace TrabajoFinalApis.Service.Implementation
             if (restaurant == null)
                 throw new Exception("Restaurante asociado no encontrado.");
 
-            if (restaurant.UserId != userId)
-                throw new Exception("No tenés permisos para crear productos en este restaurante.");
+            //if (restaurant.UserId != userId)
+            //    throw new Exception("No tenés permisos para crear productos en este restaurante.");
 
             // 3) Crear entidad
             var product = new Product

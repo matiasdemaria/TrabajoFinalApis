@@ -24,6 +24,7 @@ namespace TrabajoFinalApis.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Description")
+                        .HasMaxLength(200)
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("IsActive")
@@ -246,6 +247,9 @@ namespace TrabajoFinalApis.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("Description")
+                        .HasColumnType("TEXT");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("INTEGER");
 
@@ -272,6 +276,7 @@ namespace TrabajoFinalApis.Migrations
                         {
                             Id = 1,
                             Address = "avenida 212",
+                            Description = "lol",
                             IsActive = true,
                             Phone = "3464552",
                             RestaurantName = "PizzaLol",
@@ -281,6 +286,7 @@ namespace TrabajoFinalApis.Migrations
                         {
                             Id = 2,
                             Address = "Paraguay 1950",
+                            Description = "lol",
                             IsActive = true,
                             Phone = "34652255",
                             RestaurantName = "TacoBell",

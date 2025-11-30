@@ -17,9 +17,8 @@ namespace TrabajoFinalApis.Model.Dto.User.Request
         public string LastName { get; set; } = string.Empty;
 
         [Required]
-        [EmailAddress]
         [MaxLength(100)]
-        public string Email { get; set; } = string.Empty;
+        public string Email { get; set; }
 
         [Required]
         [MinLength(6, ErrorMessage = "La contraseña debe tener al menos 6 caracteres.")]

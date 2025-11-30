@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace TrabajoFinalApis.Migrations
 {
     /// <inheritdoc />
-    public partial class lol : Migration
+    public partial class initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -38,6 +38,7 @@ namespace TrabajoFinalApis.Migrations
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     RestaurantName = table.Column<string>(type: "TEXT", maxLength: 25, nullable: false),
+                    Description = table.Column<string>(type: "TEXT", nullable: true),
                     Address = table.Column<string>(type: "TEXT", nullable: false),
                     Phone = table.Column<string>(type: "TEXT", nullable: false),
                     IsActive = table.Column<bool>(type: "INTEGER", nullable: false),
@@ -61,7 +62,7 @@ namespace TrabajoFinalApis.Migrations
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(type: "TEXT", maxLength: 20, nullable: false),
-                    Description = table.Column<string>(type: "TEXT", nullable: true),
+                    Description = table.Column<string>(type: "TEXT", maxLength: 200, nullable: true),
                     IsActive = table.Column<bool>(type: "INTEGER", nullable: false),
                     RestaurantId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
@@ -115,11 +116,11 @@ namespace TrabajoFinalApis.Migrations
 
             migrationBuilder.InsertData(
                 table: "Restaurants",
-                columns: new[] { "Id", "Address", "IsActive", "Phone", "RestaurantName", "UserId" },
+                columns: new[] { "Id", "Address", "Description", "IsActive", "Phone", "RestaurantName", "UserId" },
                 values: new object[,]
                 {
-                    { 1, "avenida 212", true, "3464552", "PizzaLol", 1 },
-                    { 2, "Paraguay 1950", true, "34652255", "TacoBell", 2 }
+                    { 1, "avenida 212", "lol", true, "3464552", "PizzaLol", 1 },
+                    { 2, "Paraguay 1950", "lol", true, "34652255", "TacoBell", 2 }
                 });
 
             migrationBuilder.InsertData(

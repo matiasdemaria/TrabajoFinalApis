@@ -18,8 +18,8 @@ namespace TrabajoFinalApis.Repository.Implementation
         //🔹 Invitado: todos los restaurantes
         public IEnumerable<Restaurant> GetAll()
         {
-            return _context.Restaurants.
-            ToList();
+            var restaurantes = _context.Restaurants.ToList();
+            return restaurantes;
         }
 
          //🔹 Dueño: solo sus restaurantes
