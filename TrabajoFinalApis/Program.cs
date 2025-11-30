@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using GymBroAPI.API.Config.Swagger;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -17,37 +18,24 @@ builder.Services.AddControllers();
 //SWAGGER + JWT (candaditos)
 builder.Services.AddEndpointsApiExplorer();
 
-builder.Services.AddSwaggerGen(c =>
+builder.Services.AddSwaggerGen(options =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo
+    options.SwaggerDoc("v1", new OpenApiInfo
     {
+        Version = "v1",
         Title = "TrabajoFinal API",
-        Version = "v1"
+        Description = "An ASP.NET Core Web API for managing restaurant-related data",
     });
-    var jwtSecurityScheme = new OpenApiSecurityScheme
+    options.AddSecurityDefinition("Token", new OpenApiSecurityScheme()
     {
-        Name = "Authorization",
-        Description = "Ingresá el token con el formato: **Bearer {token}**",
+        BearerFormat = "JWT",
+        Description = "JWT Authorization header using the Bearer scheme.",
         In = ParameterLocation.Header,
         Type = SecuritySchemeType.Http,
-        Scheme = "Bearer",
-        BearerFormat = "JWT",
-        Reference = new OpenApiReference
-        {
-            Type = ReferenceType.SecurityScheme,
-            Id = "Bearer"
-        }
-    };
-
-    c.AddSecurityDefinition("Bearer", jwtSecurityScheme);
-
-    c.AddSecurityRequirement(new OpenApiSecurityRequirement
-    {
-        {
-            jwtSecurityScheme,
-            Array.Empty<string>()
-        }
+        Name = "Authorization",
+        Scheme = "bearer"
     });
+    options.OperationFilter<AuthOperationsFilter>();
 });
 
 // BASE DE DATOS

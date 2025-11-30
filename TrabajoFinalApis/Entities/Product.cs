@@ -15,6 +15,8 @@ public class Product
     public string? Description { get; set; }
 
     [Required]
+    [Range(0.1, double.MaxValue, ErrorMessage = "El precio del producto no puede ser 0")]
+
     public decimal Price { get; set; }
 
     public bool IsAvailable { get; set; } = true;

@@ -35,6 +35,7 @@
     <None Remove="Model\Dto\Product\Request\NewFile.txt" />
     <None Remove="Model\Dto\Product\Request\Product" />
     <None Remove="Model\Dto\Product\Request\ProductDiscountRequestDto" />
+    <None Remove="Model\Dto\Product\Response\NewFile.txt" />
     <None Remove="Model\Dto\Restaurant\NewFile.txt" />
     <None Remove="Model\Dto\User\Request\NewFile.txt" />
     <None Remove="Model\Dto\User\Request\User" />

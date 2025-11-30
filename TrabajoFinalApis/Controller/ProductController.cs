@@ -14,10 +14,12 @@ namespace TrabajoFinalApis.Controller
     public class ProductController : ControllerBase
     {
         private readonly IProductService _productService;
+        private readonly IRestaurantService _restaurantService;
 
-        public ProductController(IProductService productService)
+        public ProductController(IProductService productService, IRestaurantService restaurantService)
         {
             _productService = productService;
+            _restaurantService = restaurantService;
         }
 
         // -------- INVITADO --------
@@ -104,6 +106,34 @@ namespace TrabajoFinalApis.Controller
             return Ok(_productService.UpdateDiscount(userId, id, dto));
         }
 
+        // En ProductController.cs
+
+        [HttpPut("increase-prices/{restaurantId:int}")]
+        [Authorize]
+        public IActionResult IncreasePrices(int restaurantId, [FromBody] ProductPriceIncreaseRequestDto dto)
+        {
+            try
+            {
+                var userId = GetUserIdFromToken(); // Tu método privado para sacar ID del token
+
+                _productService.IncreasePrices(restaurantId, userId, dto.percentage);
+
+                return Ok(new { message = $"Precios aumentados un {dto.percentage}% exitosamente." });
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                return StatusCode(403, ex.Message); // 403 Forbidden
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpPut("{id:int}/favorite")]
         [Authorize]
         public ActionResult<ProductResponseDto> UpdateFavorite(int id, [FromBody] ProductFavoriteUpdateRequestDto dto)
@@ -126,6 +156,22 @@ namespace TrabajoFinalApis.Controller
                       ?? User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
             return int.Parse(sub);
+        }
+
+        // POST: api/product/restaurant/{restaurantId}/import-csv
+        [HttpPost("restaurant/{restaurantId:int}/import-csv")]
+        [Authorize]
+        public ActionResult<ProductImportResultDto> ImportCsv(int restaurantId, IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+                return BadRequest("Debe subir un archivo CSV.");
+
+            var userId = GetUserIdFromToken();
+
+            using var stream = file.OpenReadStream();
+            var result = _productService.ImportFromCsv(userId, restaurantId, stream);
+
+            return Ok(result);
         }
     }
 }
