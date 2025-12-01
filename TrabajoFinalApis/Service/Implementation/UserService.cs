@@ -168,6 +168,7 @@ namespace TrabajoFinalApis.Service.Implementation
             return new UserResponseDto
             {
                 Id = user.Id,
+                Username = user.Username,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Email = user.Email

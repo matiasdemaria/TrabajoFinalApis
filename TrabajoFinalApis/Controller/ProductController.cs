@@ -2,7 +2,6 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using TrabajoFinalApis.Entities;
 using TrabajoFinalApis.Model.Dto.Product.Request;
 using TrabajoFinalApis.Model.Dto.Product.Response;
 using TrabajoFinalApis.Service.Interface;
@@ -106,32 +105,18 @@ namespace TrabajoFinalApis.Controller
             return Ok(_productService.UpdateDiscount(userId, id, dto));
         }
 
-        // En ProductController.cs
 
         [HttpPut("increase-prices/{restaurantId:int}")]
         [Authorize]
         public IActionResult IncreasePrices(int restaurantId, [FromBody] ProductPriceIncreaseRequestDto dto)
         {
-            try
-            {
-                var userId = GetUserIdFromToken(); // Tu método privado para sacar ID del token
+            
+                var userId = GetUserIdFromToken();
 
                 _productService.IncreasePrices(restaurantId, userId, dto.percentage);
 
                 return Ok(new { message = $"Precios aumentados un {dto.percentage}% exitosamente." });
-            }
-            catch (KeyNotFoundException ex)
-            {
-                return NotFound(ex.Message);
-            }
-            catch (UnauthorizedAccessException ex)
-            {
-                return StatusCode(403, ex.Message); // 403 Forbidden
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            
         }
 
         [HttpPut("{id:int}/favorite")]
@@ -157,8 +142,6 @@ namespace TrabajoFinalApis.Controller
 
             return int.Parse(sub);
         }
-
-        // ================== EXTRA: IMPORTAR CSV ==================
 
         [HttpPost("import-csv")]
         [Authorize]

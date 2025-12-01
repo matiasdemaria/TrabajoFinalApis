@@ -48,7 +48,7 @@ namespace TrabajoFinalApis.Controller
         public ActionResult<CategoryResponseDto> Update(int id, [FromBody] CategoryUpdateRequestDto dto)
         {
             var userId = GetUserIdFromToken();
-            return Ok(_categoryService.Update(userId, id, dto));
+            return Ok(_categoryService.Update(id, userId ,dto));
         }
 
         [HttpDelete("{id:int}")]
@@ -56,7 +56,7 @@ namespace TrabajoFinalApis.Controller
         public IActionResult Remove(int id)
         {
             var userId = GetUserIdFromToken();
-            _categoryService.Remove(userId, id);
+            _categoryService.Remove(id,userId);
             return NoContent();
         }
 
