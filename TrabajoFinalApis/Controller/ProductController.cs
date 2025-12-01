@@ -158,20 +158,28 @@ namespace TrabajoFinalApis.Controller
             return int.Parse(sub);
         }
 
-        // POST: api/product/restaurant/{restaurantId}/import-csv
-        [HttpPost("restaurant/{restaurantId:int}/import-csv")]
+        // ================== EXTRA: IMPORTAR CSV ==================
+
+        [HttpPost("import-csv")]
         [Authorize]
-        public ActionResult<ProductImportResultDto> ImportCsv(int restaurantId, IFormFile file)
+        [Consumes("multipart/form-data")]
+        public ActionResult<ProductImportResultDto> ImportCsv([FromForm] ProductCsvImportRequestDto form)
         {
-            if (file == null || file.Length == 0)
+            if (form.File == null || form.File.Length == 0)
                 return BadRequest("Debe subir un archivo CSV.");
 
             var userId = GetUserIdFromToken();
+            using var stream = form.File.OpenReadStream();
 
-            using var stream = file.OpenReadStream();
-            var result = _productService.ImportFromCsv(userId, restaurantId, stream);
+            var result = _productService.ImportFromCsv(
+                userId,
+                form.RestaurantId,
+                stream
+            );
 
             return Ok(result);
         }
+
+
     }
 }

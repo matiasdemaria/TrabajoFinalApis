@@ -380,11 +380,16 @@ namespace TrabajoFinalApis.Service.Implementation
                     };
 
                     _categoryRepository.Add(category);
+
+                    //Guardamos ya  para que se genere el Id
+                    _categoryRepository.SaveChanges();
+
+                    // Ahora category.Id ya tiene el valor real de la DB
                     categories.Add(category);
                     result.CreatedCategories++;
                 }
 
-                // 5) Crear producto
+
                 var product = new Product
                 {
                     Name = productName,
@@ -396,10 +401,11 @@ namespace TrabajoFinalApis.Service.Implementation
                     HappyHourStart = null,
                     HappyHourEnd = null,
                     IsFavorite = false,
-                    CategoryId = category.Id
+                    CategoryId = category.Id   // ahora existe en la DB
                 };
 
                 _productRepository.Add(product);
+
                 result.ImportedProducts++;
             }
 
